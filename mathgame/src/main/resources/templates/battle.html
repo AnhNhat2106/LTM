@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thi đấu (Realtime)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">Thi đấu realtime</h1>
+        <p class="hero-sub">Tìm đối thủ và trả lời nhanh nhất.</p>
+      </div>
+      <span class="badge" id="status">Đang khởi tạo...</span>
+    </section>
+
+    <span id="me" th:text="${me}" style="display:none"></span>
+
+    <section class="card fade-up">
+      <div class="section">
+        <div class="grid">
+          <button id="btnFind" class="btn" type="button">Tìm đối thủ</button>
+          <button id="btnCancel" class="btn btn-ghost" type="button" style="display:none;">Hủy tìm trận</button>
+          <a id="gotoHistory" href="/battle/history" class="btn btn-ghost" style="display:none;text-decoration:none;">Lịch sử thi đấu</a>
+        </div>
+        <p class="muted" id="hintIdle" style="margin-top:10px;">Bấm “Tìm đối thủ” để vào hàng chờ.</p>
+      </div>
+
+      <div id="confirmBox" class="section" style="display:none;">
+        <div class="card" style="padding:16px;">
+          <b>Tìm thấy đối thủ</b>
+          <div id="matchInfo" class="muted" style="margin-top:6px;"></div>
+          <div class="link-row" style="margin-top:12px;">
+            <button id="btnAccept" class="btn" type="button">Xác nhận thi đấu</button>
+            <button id="btnDecline" class="btn btn-ghost" type="button">Từ chối</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="playBox" class="section" style="display:none;">
+        <div class="card" style="padding:16px;">
+          <div class="link-row">
+            <h3 id="question" style="margin:0;">Chưa có câu hỏi</h3>
+            <div id="timer" class="badge">0s</div>
+          </div>
+
+          <div id="options" class="grid" style="margin-top:12px;"></div>
+          <div id="score" style="margin-top:12px;font-weight:600;">Score: -</div>
+
+          <details style="margin-top:12px;">
+            <summary class="muted" style="cursor:pointer;">Debug log (tùy chọn)</summary>
+            <pre id="log" style="margin-top:10px;background:#0b1220;color:#cde3ff;padding:12px;border-radius:10px;min-height:120px;overflow:auto;"></pre>
+          </details>
+        </div>
+      </div>
+
+      <div id="resultBox" class="section" style="display:none;">
+        <div class="card" style="padding:16px;">
+          <h3 style="margin:0 0 10px 0;">Kết quả trận đấu</h3>
+          <div><b id="resultTitle">-</b></div>
+          <div style="margin-top:6px;">Tỉ số: <span id="resultScore">-</span></div>
+          <div style="margin-top:6px;"><span id="resultDelta">-</span></div>
+          <div class="link-row" style="margin-top:12px;">
+            <button id="btnPlayAgain" class="btn" type="button">Chơi lại</button>
+            <a class="btn btn-ghost" href="/lobby" style="text-decoration:none;">Về Lobby</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section link-row">
+        <a class="btn btn-ghost" href="/lobby">Về Lobby</a>
+        <a class="btn btn-ghost" href="/ranking">Bảng xếp hạng</a>
+        <form th:action="@{/logout}" method="post" style="margin:0;">
+          <button class="btn btn-danger" type="submit">Đăng xuất</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+  <script src="/js/battle-ws.js"></script>
+</body>
+</html>

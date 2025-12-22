@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Đăng nhập</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css" />
+</head>
+<body>
+  <main class="page auth-wrap">
+    <div class="card fade-up">
+      <div class="hero" style="margin-bottom: 16px;">
+        <div>
+          <h1 class="hero-title">Đăng nhập</h1>
+          <p class="hero-sub">Truy cập đấu trường toán học realtime.</p>
+        </div>
+        <span class="badge">ONLINE</span>
+      </div>
+
+      <div class="alert alert-success" th:if="${param.registered}">
+        Đăng ký thành công! Hãy đăng nhập.
+      </div>
+      <div class="alert alert-error" th:if="${param.error}">
+        Sai username hoặc mật khẩu.
+      </div>
+      <div class="alert alert-success" th:if="${param.logout}">
+        Bạn đã đăng xuất.
+      </div>
+
+      <form th:action="@{/login}" method="post">
+        <input class="form-control" name="username" placeholder="Username" required />
+        <input class="form-control" name="password" placeholder="Mật khẩu" type="password" required />
+        <button class="btn" type="submit">Đăng nhập</button>
+      </form>
+
+      <div class="link-row" style="margin-top: 14px;">
+        <a class="muted" th:href="@{/forgot-password}">Quên mật khẩu?</a>
+        <span class="muted">Chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a></span>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

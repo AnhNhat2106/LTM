@@ -1,0 +1,40 @@
+﻿<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luyện tập</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/theme.css" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">Luyện tập</h1>
+        <p class="hero-sub">Câu <b th:text="${index}"></b>/<b th:text="${total}"></b></p>
+      </div>
+      <span class="badge">PRACTICE</span>
+    </section>
+
+    <section class="card fade-up">
+      <h2 style="margin-top:0;" th:text="${question}"></h2>
+      <form method="post" action="/practice/answer">
+        <input class="form-control" type="number" name="userAnswer" placeholder="Nhập đáp án..." required />
+        <button class="btn" type="submit">Trả lời</button>
+      </form>
+
+      <div class="muted" th:if="${correctSoFar != null}" style="margin-top:10px;">
+        Đúng hiện tại: <b th:text="${correctSoFar}"></b>
+      </div>
+
+      <div class="section link-row">
+        <a class="btn btn-ghost" href="/practice/history">Lịch sử luyện tập</a>
+        <a class="btn btn-ghost" href="/lobby">Về Lobby</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
