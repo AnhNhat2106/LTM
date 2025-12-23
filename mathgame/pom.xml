@@ -66,6 +66,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Email (OTP) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- Lombok (tuỳ chọn, giúp code gọn) -->
         <dependency>
             <groupId>org.projectlombok</groupId>

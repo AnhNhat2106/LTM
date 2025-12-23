@@ -10,92 +10,80 @@
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
 <body class="galaxy">
-  <main class="page">
-    <section class="hero">
-      <div>
-        <h1 class="hero-title">Trung tâm điều khiển</h1>
-        <p class="hero-sub">
-          Xin chào <b th:text="${username}">player</b> — sẵn sàng vào trận.
-        </p>
+  <main class="control-page">
+    <section class="control-hero">
+      <div class="hero-text">
+        <h1>Trung tâm điều khiển</h1>
+        <p>Xin chào <b th:text="${username}">player</b> - sẵn sàng vào trận.</p>
       </div>
-      <span class="badge">⚡ REALTIME</span>
+      <span class="status-pill">Realtime</span>
     </section>
 
-    <section class="layout-split fade-up">
-      <div class="space-frame">
-        <div class="section-title">Chế độ</div>
-        <div class="tile-grid compact">
-          <a class="tile" th:href="@{/profile}">
-            <span class="tile-icon">👤</span>
-            <span class="tile-text">
-              <span class="tile-title">Hồ sơ</span>
-              <span class="tile-sub">Profile</span>
-            </span>
-          </a>
+    <section class="control-shell fade-up">
+      <aside class="side-nav">
+        <a class="side-link active" th:href="@{/profile}">Hồ sơ</a>
+        <a class="side-link" th:href="@{/ranking}">Bảng xếp hạng</a>
+        <a class="side-link" th:href="@{/battle/history}">Lịch sử trận đấu</a>
+        <a class="side-link" th:href="@{/practice/history}">Lịch sử luyện tập</a>
+      </aside>
 
-          <a class="tile alt" th:href="@{/battle}">
-            <span class="tile-icon">⚔️</span>
-            <span class="tile-text">
-              <span class="tile-title">Đấu realtime</span>
-              <span class="tile-sub">Battle</span>
-            </span>
-          </a>
+      <div class="mode-grid">
+        <article class="mode-card mode-card-realtime">
+          <div class="card-visual card-visual-realtime">
+            <span class="blade"></span>
+            <span class="blade alt"></span>
+            <span class="spark"></span>
+          </div>
+          <h2>Đấu realtime</h2>
+          <p>Thi đấu với người chơi khác ngay lập tức.</p>
+          <a class="mode-btn" th:href="@{/battle}">Bắt đầu ngay</a>
+        </article>
 
-          <a class="tile" th:href="@{/ranking}">
-            <span class="tile-icon">🏆</span>
-            <span class="tile-text">
-              <span class="tile-title">Bảng xếp hạng</span>
-              <span class="tile-sub">Rank</span>
-            </span>
-          </a>
-
-          <a class="tile alt" th:href="@{/practice}">
-            <span class="tile-icon">🧠</span>
-            <span class="tile-text">
-              <span class="tile-title">Luyện tập cá nhân</span>
-              <span class="tile-sub">Practice</span>
-            </span>
-          </a>
-
-          <a class="tile" th:href="@{/battle/history}">
-            <span class="tile-icon">🕒</span>
-            <span class="tile-text">
-              <span class="tile-title">Lịch sử trận đấu</span>
-              <span class="tile-sub">History</span>
-            </span>
-          </a>
-
-          <a class="tile alt" th:href="@{/practice/history}">
-            <span class="tile-icon">📘</span>
-            <span class="tile-text">
-              <span class="tile-title">Lịch sử luyện tập</span>
-              <span class="tile-sub">Practice log</span>
-            </span>
-          </a>
-        </div>
+        <article class="mode-card mode-card-practice">
+          <div class="card-visual card-visual-practice">
+            <span class="core"></span>
+            <span class="orbit"></span>
+            <span class="orbit small"></span>
+          </div>
+          <h2>Luyện tập cá nhân</h2>
+          <p>Rèn luyện tốc độ &amp; độ chính xác.</p>
+          <a class="mode-btn alt" th:href="@{/practice}">Luyện tập ngay</a>
+        </article>
       </div>
 
-      <div class="stats-card">
-        <div class="section-title">Tổng quan nhanh</div>
-        <div class="stat-row">
-          <span class="stat-label">Battle points</span>
-          <span class="stat-value" th:text="${battlePoints}">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Số trận</span>
-          <span class="stat-value" th:text="${battleMatches}">0</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Tỉ lệ thắng</span>
-          <span class="stat-value"><span th:text="${battleWinRate}">0</span>%</span>
+      <aside class="profile-card">
+        <div class="profile-top">
+          <div class="avatar-ring">
+            <div class="avatar-core" th:text="${#strings.substring(username,0,1)}">N</div>
+          </div>
+          <div>
+            <div class="profile-name" th:text="${username}">Nhật</div>
+            <div class="profile-rank">Rank: <span class="rank-pill">Đồng III</span></div>
+          </div>
         </div>
 
-        <div class="cta-row">
-          <form th:action="@{/logout}" method="post" style="margin:0;">
-            <button class="btn btn-danger" type="submit">Đăng xuất</button>
-          </form>
+        <div class="profile-stats">
+          <div class="profile-row">
+            <span>Battle Points</span>
+            <strong th:text="${battlePoints}">35</strong>
+          </div>
+          <div class="profile-row">
+            <span>Số trận</span>
+            <strong th:text="${battleMatches}">11</strong>
+          </div>
+          <div class="profile-row">
+            <span>Tỉ lệ thắng</span>
+            <strong><span th:text="${battleWinRate}">18</span>%</strong>
+          </div>
+          <div class="winrate-bar">
+            <span class="winrate-fill" th:style="'width:' + ${battleWinRate} + '%'"></span>
+          </div>
         </div>
-      </div>
+
+        <form class="logout-form" th:action="@{/logout}" method="post">
+          <button class="logout-btn" type="submit">Đăng xuất</button>
+        </form>
+      </aside>
     </section>
   </main>
 </body>

@@ -21,6 +21,8 @@ public class RegisterRequest {
     @NotBlank(message = "Vui lòng nhập lại mật khẩu")
     private String confirmPassword;
 
+    private String otpCode;
+
     // ===== Getter/Setter =====
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -33,4 +35,7 @@ public class RegisterRequest {
 
     public String getConfirmPassword() { return confirmPassword; }
     public void setConfirmPassword(String confirmPassword) { this.confirmPassword = confirmPassword; }
+
+    public String getOtpCode() { return otpCode; }
+    public void setOtpCode(String otpCode) { this.otpCode = otpCode; }
 }

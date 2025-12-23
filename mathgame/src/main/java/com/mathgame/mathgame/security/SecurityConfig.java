@@ -25,6 +25,7 @@ public class SecurityConfig {
                         "/",
                         "/login",
                         "/register",
+                        "/otp/send",
                         "/forgot-password",
                         "/error",
                         "/css/**",
