@@ -14,16 +14,19 @@
     <section class="hero">
       <div>
         <h1 class="hero-title">Luyện tập</h1>
-        <p class="hero-sub">Câu <b th:text="${index}"></b>/<b th:text="${total}"></b></p>
+        <p class="hero-sub">
+          Câu <b th:text="${index}"></b>/<b th:text="${total}"></b> · Mức độ: <b th:text="${levelLabel}">-</b>
+        </p>
       </div>
       <span class="badge">PRACTICE</span>
     </section>
 
     <section class="card fade-up">
       <h2 style="margin-top:0;" th:text="${question}"></h2>
-      <form method="post" action="/practice/answer">
-        <input class="form-control" type="number" name="userAnswer" placeholder="Nhập đáp án..." required />
-        <button class="btn" type="submit">Trả lời</button>
+      <form method="post" action="/practice/answer" class="section">
+        <div class="grid">
+          <button class="optBtn" type="submit" name="choice" th:each="opt, st : ${options}" th:value="${letters[st.index]}" th:text="${opt}"></button>
+        </div>
       </form>
 
       <div class="muted" th:if="${correctSoFar != null}" style="margin-top:10px;">
@@ -32,9 +35,11 @@
 
       <div class="section link-row">
         <a class="btn btn-ghost" href="/practice/history">Lịch sử luyện tập</a>
-        <a class="btn btn-ghost" href="/lobby">Về Lobby</a>
+        <a class="btn btn-ghost" href="/practice">Đổi mức độ</a>
+        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
       </div>
     </section>
   </main>
 </body>
 </html>
+

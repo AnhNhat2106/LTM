@@ -1,5 +1,6 @@
 package com.mathgame.mathgame.repository;
 
+import com.mathgame.mathgame.dto.PracticeSummaryDto;
 import com.mathgame.mathgame.dto.RankingRowDto;
 import com.mathgame.mathgame.entity.PracticeHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +24,15 @@ public interface PracticeHistoryRepository extends JpaRepository<PracticeHistory
         order by coalesce(sum(p.score),0) desc, count(p.id) desc
     """)
     List<RankingRowDto> getRanking();
+
+    @Query("""
+        select new com.mathgame.mathgame.dto.PracticeSummaryDto(
+            coalesce(sum(p.score), 0),
+            count(p.id),
+            coalesce(sum(p.correctAnswers), 0)
+        )
+        from PracticeHistory p
+        where p.username = :username
+    """)
+    PracticeSummaryDto getSummary(String username);
 }

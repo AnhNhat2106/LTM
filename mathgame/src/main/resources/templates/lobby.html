@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" />
@@ -9,34 +9,92 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
-<body>
+<body class="galaxy">
   <main class="page">
     <section class="hero">
       <div>
         <h1 class="hero-title">Trung tâm điều khiển</h1>
         <p class="hero-sub">
-          Sẵn sàng vào trận. <span th:if="${#authentication != null}">Xin chào <b th:text="${#authentication.name}">player</b></span>
+          Xin chào <b th:text="${username}">player</b> — sẵn sàng vào trận.
         </p>
       </div>
-      <span class="badge">REALTIME</span>
+      <span class="badge">⚡ REALTIME</span>
     </section>
 
-    <section class="card fade-up">
-      <div class="section">
-        <h3 style="margin:0 0 10px 0;">Chế độ</h3>
-        <div class="grid">
-          <a class="btn" th:href="@{/battle}">Đấu realtime</a>
-          <a class="btn" th:href="@{/ranking}">Bảng xếp hạng</a>
-          <a class="btn" th:href="@{/battle/history}">Lịch sử trận đấu</a>
-          <a class="btn" th:href="@{/practice}">Luyện tập cá nhân</a>
-          <a class="btn" th:href="@{/practice/history}">Lịch sử luyện tập</a>
+    <section class="layout-split fade-up">
+      <div class="space-frame">
+        <div class="section-title">Chế độ</div>
+        <div class="tile-grid compact">
+          <a class="tile" th:href="@{/profile}">
+            <span class="tile-icon">👤</span>
+            <span class="tile-text">
+              <span class="tile-title">Hồ sơ</span>
+              <span class="tile-sub">Profile</span>
+            </span>
+          </a>
+
+          <a class="tile alt" th:href="@{/battle}">
+            <span class="tile-icon">⚔️</span>
+            <span class="tile-text">
+              <span class="tile-title">Đấu realtime</span>
+              <span class="tile-sub">Battle</span>
+            </span>
+          </a>
+
+          <a class="tile" th:href="@{/ranking}">
+            <span class="tile-icon">🏆</span>
+            <span class="tile-text">
+              <span class="tile-title">Bảng xếp hạng</span>
+              <span class="tile-sub">Rank</span>
+            </span>
+          </a>
+
+          <a class="tile alt" th:href="@{/practice}">
+            <span class="tile-icon">🧠</span>
+            <span class="tile-text">
+              <span class="tile-title">Luyện tập cá nhân</span>
+              <span class="tile-sub">Practice</span>
+            </span>
+          </a>
+
+          <a class="tile" th:href="@{/battle/history}">
+            <span class="tile-icon">🕒</span>
+            <span class="tile-text">
+              <span class="tile-title">Lịch sử trận đấu</span>
+              <span class="tile-sub">History</span>
+            </span>
+          </a>
+
+          <a class="tile alt" th:href="@{/practice/history}">
+            <span class="tile-icon">📘</span>
+            <span class="tile-text">
+              <span class="tile-title">Lịch sử luyện tập</span>
+              <span class="tile-sub">Practice log</span>
+            </span>
+          </a>
         </div>
       </div>
 
-      <div class="section">
-        <form th:action="@{/logout}" method="post" style="margin:0;">
-          <button class="btn btn-danger" type="submit">Đăng xuất</button>
-        </form>
+      <div class="stats-card">
+        <div class="section-title">Tổng quan nhanh</div>
+        <div class="stat-row">
+          <span class="stat-label">Battle points</span>
+          <span class="stat-value" th:text="${battlePoints}">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Số trận</span>
+          <span class="stat-value" th:text="${battleMatches}">0</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Tỉ lệ thắng</span>
+          <span class="stat-value"><span th:text="${battleWinRate}">0</span>%</span>
+        </div>
+
+        <div class="cta-row">
+          <form th:action="@{/logout}" method="post" style="margin:0;">
+            <button class="btn btn-danger" type="submit">Đăng xuất</button>
+          </form>
+        </div>
       </div>
     </section>
   </main>

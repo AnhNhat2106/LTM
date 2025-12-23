@@ -4,6 +4,7 @@ public class PracticeQuestion {
     private Long id;
     private String text;
     private int answer;
+    private String level;
 
     public PracticeQuestion() {}
 
@@ -21,4 +22,7 @@ public class PracticeQuestion {
 
     public int getAnswer() { return answer; }
     public void setAnswer(int answer) { this.answer = answer; }
+
+    public String getLevel() { return level; }
+    public void setLevel(String level) { this.level = level; }
 }

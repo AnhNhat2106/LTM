@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kết quả luyện tập</title>
+  <title>Chọn mức độ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
@@ -13,20 +13,21 @@
   <main class="page">
     <section class="hero">
       <div>
-        <h1 class="hero-title">Kết quả luyện tập</h1>
-        <p class="hero-sub">Mức độ: <b th:text="${levelLabel}">-</b></p>
+        <h1 class="hero-title">Chọn mức độ</h1>
+        <p class="hero-sub">Hãy chọn độ khó phù hợp để bắt đầu luyện tập.</p>
       </div>
-      <span class="badge">RESULT</span>
+      <span class="badge">PRACTICE</span>
     </section>
 
     <section class="card fade-up">
-      <p>Tổng câu: <b th:text="${total}"></b></p>
-      <p>Đúng: <b th:text="${correct}"></b></p>
-      <p>Điểm: <b th:text="${score}"></b></p>
+      <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+      <div class="grid">
+        <a class="btn" href="/practice?level=easy">Dễ</a>
+        <a class="btn" href="/practice?level=medium">Trung bình</a>
+        <a class="btn" href="/practice?level=hard">Khó</a>
+      </div>
 
       <div class="section link-row">
-        <a class="btn" href="/practice">Luyện tập lại</a>
-        <a class="btn btn-ghost" href="/practice/history">Lịch sử</a>
         <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
       </div>
     </section>

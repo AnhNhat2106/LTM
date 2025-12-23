@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
-<body>
+<body class="galaxy">
   <main class="page">
     <section class="hero">
       <div>
@@ -21,14 +21,14 @@
 
     <span id="me" th:text="${me}" style="display:none"></span>
 
-    <section class="card fade-up">
+    <section class="space-frame fade-up">
       <div class="section">
         <div class="grid">
           <button id="btnFind" class="btn" type="button">Tìm đối thủ</button>
           <button id="btnCancel" class="btn btn-ghost" type="button" style="display:none;">Hủy tìm trận</button>
           <a id="gotoHistory" href="/battle/history" class="btn btn-ghost" style="display:none;text-decoration:none;">Lịch sử thi đấu</a>
         </div>
-        <p class="muted" id="hintIdle" style="margin-top:10px;">Bấm “Tìm đối thủ” để vào hàng chờ.</p>
+        <p class="muted" id="hintIdle" style="margin-top:10px;">Bấm "Tìm đối thủ" để vào hàng chờ.</p>
       </div>
 
       <div id="confirmBox" class="section" style="display:none;">
@@ -50,34 +50,49 @@
           </div>
 
           <div id="options" class="grid" style="margin-top:12px;"></div>
-          <div id="score" style="margin-top:12px;font-weight:600;">Score: -</div>
-
-          <details style="margin-top:12px;">
-            <summary class="muted" style="cursor:pointer;">Debug log (tùy chọn)</summary>
-            <pre id="log" style="margin-top:10px;background:#0b1220;color:#cde3ff;padding:12px;border-radius:10px;min-height:120px;overflow:auto;"></pre>
-          </details>
         </div>
       </div>
 
       <div id="resultBox" class="section" style="display:none;">
-        <div class="card" style="padding:16px;">
-          <h3 style="margin:0 0 10px 0;">Kết quả trận đấu</h3>
-          <div><b id="resultTitle">-</b></div>
-          <div style="margin-top:6px;">Tỉ số: <span id="resultScore">-</span></div>
-          <div style="margin-top:6px;"><span id="resultDelta">-</span></div>
-          <div class="link-row" style="margin-top:12px;">
+        <div class="result-hero">KẾT QUẢ</div>
+        <div class="result-panel">
+          <div class="result-banner" id="resultTitle">-</div>
+
+          <div class="result-scoreboard">
+            <div class="result-player left">
+              <div class="result-emblem">🛡️</div>
+              <div class="result-name" id="resultPlayer1">-</div>
+            </div>
+            <div class="result-score" id="resultScore">-</div>
+            <div class="result-player right">
+              <div class="result-emblem">⚔️</div>
+              <div class="result-name" id="resultPlayer2">-</div>
+            </div>
+          </div>
+
+          <div class="result-meta-grid">
+            <div class="result-meta-item">
+              <span class="result-icon">🏆</span>
+              <span>Người thắng:</span>
+              <b id="resultWinner">-</b>
+            </div>
+            <div class="result-meta-item">
+              <span class="result-icon">✨</span>
+              <span id="resultDelta">-</span>
+            </div>
+          </div>
+
+          <div class="result-actions">
+            <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
             <button id="btnPlayAgain" class="btn" type="button">Chơi lại</button>
-            <a class="btn btn-ghost" href="/lobby" style="text-decoration:none;">Về Lobby</a>
+            <a class="btn btn-ghost" href="/ranking">Bảng xếp hạng</a>
           </div>
         </div>
       </div>
 
       <div class="section link-row">
-        <a class="btn btn-ghost" href="/lobby">Về Lobby</a>
+        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
         <a class="btn btn-ghost" href="/ranking">Bảng xếp hạng</a>
-        <form th:action="@{/logout}" method="post" style="margin:0;">
-          <button class="btn btn-danger" type="submit">Đăng xuất</button>
-        </form>
       </div>
     </section>
   </main>

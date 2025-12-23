@@ -57,7 +57,7 @@ public class BattleRealtimeService {
         String p2 = waiting.poll();
         if (p1 == null || p2 == null) return;
 
-        // trÃ¡nh match cÃ¹ng 1 user (hiáº¿m nhÆ°ng Ä‘á»ƒ cháº¯c)
+        // trÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡nh match cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¹ng 1 user (hiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿m nhÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ng ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯c)
         if (p1.equalsIgnoreCase(p2)) {
             waiting.add(p1);
             return;
@@ -66,14 +66,14 @@ public class BattleRealtimeService {
         String matchId = UUID.randomUUID().toString();
         RoomState room = new RoomState(matchId, p1, p2);
 
-        // âœ… random cÃ¢u há»i cho match (5 cÃ¢u hoáº·c Ã­t hÆ¡n náº¿u pool Ã­t)
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ random cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢u hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âi cho match (5 cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢u hoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â·c ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­t hÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡n nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿u pool ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­t)
         List<BattleQuestionItem> pool = new ArrayList<>(questionBank.getAll());
         Collections.shuffle(pool);
         room.questions = pool.subList(0, Math.min(5, pool.size()));
 
         rooms.put(matchId, room);
 
-        // âœ… chá»‰ thÃ´ng bÃ¡o "match found" -> CHÆ¯A start
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â° thÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ng bÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡o "match found" -> CHÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯A start
         MatchFoundEvent evt = new MatchFoundEvent(matchId, p1, p2);
         ws.convertAndSendToUser(p1, "/queue/match", evt);
         ws.convertAndSendToUser(p2, "/queue/match", evt);
@@ -91,7 +91,7 @@ public class BattleRealtimeService {
         ws.convertAndSendToUser(username, "/queue/system",
                 new SystemEvent("CONFIRM", "Bạn đã xác nhận. Đang chờ đối thủ..."));
 
-        // âœ… cáº£ 2 ngÆ°á»i accept -> báº¯t Ä‘áº§u tráº­n
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£ 2 ngÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âi accept -> bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯t ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§u trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­n
         if (room.accepted.size() == 2) {
             ws.convertAndSendToUser(room.p1, "/queue/system",
                     new SystemEvent("PLAYING", "Bắt đầu trận!"));
@@ -123,7 +123,7 @@ public class BattleRealtimeService {
     private void sendQuestion(RoomState room) {
         int idx = room.index;
 
-        // an toÃ n: náº¿u háº¿t cÃ¢u -> end
+        // an toÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â n: nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿u hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿t cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢u -> end
         if (room.questions == null || idx >= room.questions.size()) {
             endMatch(room);
             return;
@@ -131,7 +131,7 @@ public class BattleRealtimeService {
 
         BattleQuestionItem q = room.questions.get(idx);
 
-        // táº¡o options A/B/C/D tá»« Ä‘Ã¡p Ã¡n sá»‘
+        // tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡o options A/B/C/D tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â« ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡p ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡n sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œ
         OptGen gen = genOptions(q.getAnswer());
 
         room.openQuestion(idx);
@@ -146,36 +146,34 @@ public class BattleRealtimeService {
         if (room == null) return;
         if (!room.isPlayer(username)) return;
 
-        // âœ… chÆ°a start vÃ¬ chÆ°a Ä‘á»§ accept -> bá» qua
-        if (room.accepted.size() < 2) return;
+        synchronized (room) {
+            if (room.accepted.size() < 2) return;
+            if (req.getIndex() != room.index) return;
+            if (!room.firstTimeAnswer(room.index, username)) return;
 
-        // âœ… chá»‰ cho tráº£ lá»i Ä‘Ãºng cÃ¢u hiá»‡n táº¡i
-        if (req.getIndex() != room.index) return;
+            String correctChoice = room.correctChoiceByIndex.get(room.index);
+            boolean correct = correctChoice != null && correctChoice.equalsIgnoreCase(req.getChoice());
 
-        // âœ… anti-spam: má»—i user chá»‰ tráº£ lá»i 1 láº§n / cÃ¢u
-        if (!room.firstTimeAnswer(room.index, username)) return;
+            room.answer(username, correct);
 
-        // âœ… cháº¥m Ä‘Ãºng/sai theo Ä‘Ã¡p Ã¡n tháº­t
-        String correctChoice = room.correctChoiceByIndex.get(room.index);
-        boolean correct = correctChoice != null && correctChoice.equalsIgnoreCase(req.getChoice());
+            ws.convertAndSend("/topic/match/" + room.matchId,
+                    new ScoreUpdateEvent(room.matchId, room.p1, room.p2, room.score1, room.score2, room.remainSec()));
 
-        room.answer(username, correct);
+            if (!room.allAnswered(room.index)) {
+                return;
+            }
 
-        // cáº­p nháº­t Ä‘iá»ƒm realtime
-        ws.convertAndSend("/topic/match/" + room.matchId,
-                new ScoreUpdateEvent(room.matchId, room.p1, room.p2, room.score1, room.score2, room.remainSec()));
-
-        // sang cÃ¢u tiáº¿p theo / káº¿t thÃºc
-        if (room.index >= room.questions.size() - 1) {
-            endMatch(room);
-        } else {
-            room.index++;
-            sendQuestion(room);
+            if (room.index >= room.questions.size() - 1) {
+                endMatch(room);
+            } else {
+                room.index++;
+                sendQuestion(room);
+            }
         }
     }
 
     private void endMatch(RoomState room) {
-        // âœ… lÆ°u DB theo rule +10/-5/+5
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ lÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°u DB theo rule +10/-5/+5
         battleResultService.recordBattle(room.p1, room.p2, room.score1, room.score2);
 
         int deltaP1 = BattlePointRule.delta(room.score1, room.score2);
@@ -211,7 +209,7 @@ public class BattleRealtimeService {
     private OptGen genOptions(int correct) {
         Random rd = new Random();
 
-        // táº¡o 3 Ä‘Ã¡p Ã¡n sai gáº§n Ä‘Ãºng
+        // tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡o 3 ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡p ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡n sai gÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§n ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºng
         Set<Integer> set = new LinkedHashSet<>();
         set.add(correct);
         while (set.size() < 4) {
@@ -245,16 +243,16 @@ public class BattleRealtimeService {
         int score1 = 0;
         int score2 = 0;
 
-        // âœ… confirm
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ confirm
         final Set<String> accepted = ConcurrentHashMap.newKeySet();
 
-        // âœ… anti-spam per question
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ anti-spam per question
         final Map<Integer, Set<String>> answered = new ConcurrentHashMap<>();
 
-        // âœ… timer (táº¡m demo fixed 10s, báº¡n nÃ¢ng cáº¥p countdown sau)
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ timer (tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡m demo fixed 10s, bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡n nÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥p countdown sau)
         long questionDeadlineMs = 0;
 
-        // âœ… cÃ¢u há»i + Ä‘Ã¡p Ã¡n Ä‘Ãºng theo A/B/C/D cho tá»«ng index
+        // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢u hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âi + ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡p ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡n ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âºng theo A/B/C/D cho tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â«ng index
         List<BattleQuestionItem> questions;
         Map<Integer, String> correctChoiceByIndex = new ConcurrentHashMap<>();
 
@@ -277,9 +275,14 @@ public class BattleRealtimeService {
             return (int) Math.max(0, (ms + 999) / 1000);
         }
 
-        boolean firstTimeAnswer(int idx, String username) {
+                boolean firstTimeAnswer(int idx, String username) {
             answered.putIfAbsent(idx, ConcurrentHashMap.newKeySet());
             return answered.get(idx).add(username);
+        }
+
+        boolean allAnswered(int idx) {
+            answered.putIfAbsent(idx, ConcurrentHashMap.newKeySet());
+            return answered.get(idx).size() >= 2;
         }
 
         void answer(String user, boolean correct) {
@@ -289,7 +292,7 @@ public class BattleRealtimeService {
         }
     }
 
-    // âœ… rule battle point +10/-5/+5
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ rule battle point +10/-5/+5
     static class BattlePointRule {
         static int delta(int myScore, int oppScore) {
             if (myScore > oppScore) return 10;
@@ -298,4 +301,8 @@ public class BattleRealtimeService {
         }
     }
 }
+
+
+
+
 

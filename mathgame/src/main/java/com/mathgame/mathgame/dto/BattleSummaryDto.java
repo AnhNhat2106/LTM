@@ -1,0 +1,23 @@
+package com.mathgame.mathgame.dto;
+
+public class BattleSummaryDto {
+    private long totalPoints;
+    private long matches;
+    private long wins;
+    private long draws;
+    private long losses;
+
+    public BattleSummaryDto(long totalPoints, long matches, long wins, long draws, long losses) {
+        this.totalPoints = totalPoints;
+        this.matches = matches;
+        this.wins = wins;
+        this.draws = draws;
+        this.losses = losses;
+    }
+
+    public long getTotalPoints() { return totalPoints; }
+    public long getMatches() { return matches; }
+    public long getWins() { return wins; }
+    public long getDraws() { return draws; }
+    public long getLosses() { return losses; }
+}

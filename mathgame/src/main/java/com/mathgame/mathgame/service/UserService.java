@@ -19,7 +19,6 @@ public class UserService {
 
     public void register(RegisterRequest req) {
 
-        // Validate basic
         if (req.getUsername() == null || req.getUsername().trim().isEmpty()) {
             throw new RuntimeException("Username không được để trống");
         }
@@ -30,7 +29,6 @@ public class UserService {
             throw new RuntimeException("Password không được để trống");
         }
 
-        // 1) Check confirm password
         if (!req.getPassword().equals(req.getConfirmPassword())) {
             throw new RuntimeException("Mật khẩu xác nhận không khớp");
         }
@@ -38,7 +36,6 @@ public class UserService {
         String username = req.getUsername().trim();
         String email = req.getEmail().trim();
 
-        // 2) Check trùng username/email
         if (repo.existsByUsername(username)) {
             throw new RuntimeException("Username đã tồn tại");
         }
@@ -46,15 +43,38 @@ public class UserService {
             throw new RuntimeException("Email đã tồn tại");
         }
 
-        // 3) Tạo user & mã hóa password
         User u = new User();
         u.setUsername(username);
         u.setEmail(email);
         u.setPasswordHash(encoder.encode(req.getPassword()));
-        u.setRole("USER"); // ✅ đồng bộ với Security
+        u.setRole("USER");
 
-        // 4) Lưu DB
         repo.save(u);
+    }
+
+    public User findByUsername(String username) {
+        return repo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+    }
+
+    public void changePassword(String username, String currentPassword, String newPassword, String confirmPassword) {
+        if (currentPassword == null || currentPassword.isBlank()) {
+            throw new RuntimeException("Mật khẩu hiện tại không được để trống");
+        }
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new RuntimeException("Mật khẩu mới không được để trống");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            throw new RuntimeException("Mật khẩu xác nhận không khớp");
+        }
+
+        User user = findByUsername(username);
+        if (!encoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new RuntimeException("Mật khẩu hiện tại không đúng");
+        }
+
+        user.setPasswordHash(encoder.encode(newPassword));
+        repo.save(user);
     }
 
     public String resetPasswordByEmail(String email) {

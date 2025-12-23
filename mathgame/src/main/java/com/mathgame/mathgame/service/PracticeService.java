@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class PracticeService {
@@ -21,15 +22,13 @@ public class PracticeService {
     private final PracticeHistoryRepository historyRepo;
     private final Random random = new Random();
 
-    // ✅ danh sách câu hỏi load từ JSON
     private List<PracticeQuestion> bank = Collections.emptyList();
 
     public PracticeService(PracticeHistoryRepository historyRepo) {
         this.historyRepo = historyRepo;
-        loadQuestionBank(); // load ngay khi service khởi tạo
+        loadQuestionBank();
     }
 
-    // ====== Load câu hỏi từ file JSON trong resources ======
     private void loadQuestionBank() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -37,28 +36,76 @@ public class PracticeService {
             try (InputStream is = res.getInputStream()) {
                 this.bank = mapper.readValue(is, new TypeReference<List<PracticeQuestion>>() {});
             }
-            System.out.println("✅ Loaded practice_questions.json: " + bank.size() + " questions");
+            System.out.println("Loaded practice_questions.json: " + bank.size() + " questions");
         } catch (Exception e) {
             this.bank = Collections.emptyList();
-            System.err.println("❌ Không load được practice_questions.json: " + e.getMessage());
+            System.err.println("Không load được practice_questions.json: " + e.getMessage());
         }
     }
 
-    // ====== Generate câu hỏi từ bank ======
     public QuestionDto generateQuestion() {
+        return generateQuestion(null);
+    }
+
+    public QuestionDto generateQuestion(String level) {
         if (bank == null || bank.isEmpty()) {
             throw new RuntimeException("Question bank rỗng! Kiểm tra file: src/main/resources/questions/practice_questions.json");
         }
-        PracticeQuestion q = bank.get(random.nextInt(bank.size()));
+
+        List<PracticeQuestion> pool = getPool(level);
+        if (pool.isEmpty()) {
+            pool = bank;
+        }
+
+        PracticeQuestion q = pool.get(random.nextInt(pool.size()));
         return new QuestionDto(q.getText(), q.getAnswer());
     }
 
-    // ====== Tính điểm ======
+    public PracticeQuestion pickQuestion(String level, List<Integer> usedIds) {
+        if (bank == null || bank.isEmpty()) {
+            return null;
+        }
+
+        List<PracticeQuestion> pool = getPool(level);
+        if (pool.isEmpty()) {
+            return null;
+        }
+
+        List<PracticeQuestion> available = pool;
+        if (usedIds != null && !usedIds.isEmpty()) {
+            available = pool.stream()
+                    .filter(q -> q.getId() != null && !usedIds.contains(q.getId().intValue()))
+                    .collect(Collectors.toList());
+        }
+
+        if (available.isEmpty()) {
+            return null;
+        }
+
+        return available.get(random.nextInt(available.size()));
+    }
+
+    public int countByLevel(String level) {
+        if (bank == null || bank.isEmpty()) {
+            return 0;
+        }
+        return getPool(level).size();
+    }
+
+    private List<PracticeQuestion> getPool(String level) {
+        if (level == null || level.isBlank()) {
+            return bank;
+        }
+        String target = level.trim().toLowerCase();
+        return bank.stream()
+                .filter(q -> q.getLevel() != null && q.getLevel().trim().equalsIgnoreCase(target))
+                .collect(Collectors.toList());
+    }
+
     public int calcScore(int correctAnswers) {
         return correctAnswers * 10;
     }
 
-    // ====== Lưu lịch sử luyện tập ======
     public PracticeHistory saveHistory(String username, int total, int correct, LocalDateTime startedAt) {
         PracticeHistory h = new PracticeHistory();
         h.setUsername(username);
@@ -70,7 +117,6 @@ public class PracticeService {
         return historyRepo.save(h);
     }
 
-    // ====== Lấy lịch sử luyện tập theo user ======
     public List<PracticeHistory> getPracticeHistory(String username) {
         return historyRepo.findByUsernameOrderByIdDesc(username);
     }

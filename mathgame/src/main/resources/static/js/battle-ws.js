@@ -1,5 +1,9 @@
 ﻿let stompClient = null;
 let currentMatchId = null;
+let countdownTimer = null;
+let countdownRemaining = 0;
+let currentUser = "";
+const answeredIndex = new Set();
 
 const $ = (id) => document.getElementById(id);
 
@@ -22,6 +26,8 @@ function setState({ status, showFind, showCancel, showConfirm, showPlay, showRes
 function setIdle(msg = "Sẵn sàng") {
   setState({ status: msg, showFind: true, showCancel: false, showConfirm: false, showPlay: false, showResult: false });
   currentMatchId = null;
+  clearCountdown();
+  answeredIndex.clear();
 }
 
 function setQueuing(msg = "Đang tìm đối thủ...") {
@@ -67,7 +73,7 @@ function connectWs() {
       log("[MATCH] " + m.body);
 
       currentMatchId = evt.matchId;
-      $("matchInfo").textContent = `MatchId: ${evt.matchId} | ${evt.player1} vs ${evt.player2}`;
+      $("matchInfo").textContent = `${evt.player1} vs ${evt.player2}`;
       setFound("Tìm thấy đối thủ!");
     });
 
@@ -75,14 +81,29 @@ function connectWs() {
       const r = JSON.parse(m.body);
       log("[RESULT] " + m.body);
 
+      const winner = r.score1 === r.score2
+        ? null
+        : (r.score1 > r.score2 ? r.player1 : r.player2);
+
       let title = "HÒA";
-      if (r.myDelta > 0) title = "CHIẾN THẮNG";
-      else if (r.myDelta < 0) title = "THẤT BẠI";
+      if (winner) {
+        title = winner === currentUser ? "CHIẾN THẮNG" : "THẤT BẠI";
+      }
 
       $("resultTitle").textContent = title;
-      $("resultScore").textContent = `${r.score1} - ${r.score2}`;
+      $("resultWinner").textContent = winner ?? "Không có (Hòa)";
+      $("resultScore").textContent = `${r.score1} : ${r.score2}`;
       $("resultDelta").textContent = `Điểm nhận: ${r.myDelta > 0 ? "+" : ""}${r.myDelta}`;
+      $("resultPlayer1").textContent = r.player1 ?? "-";
+      $("resultPlayer2").textContent = r.player2 ?? "-";
 
+      const titleEl = $("resultTitle");
+      titleEl.classList.remove("result-win", "result-lose", "result-draw");
+      if (!winner) titleEl.classList.add("result-draw");
+      else if (winner === currentUser) titleEl.classList.add("result-win");
+      else titleEl.classList.add("result-lose");
+
+      clearCountdown();
       setResult("Trận đấu kết thúc!");
     });
 
@@ -116,11 +137,6 @@ function acceptMatch() {
       setPlaying("Đang thi đấu");
       renderQuestion(evt);
     }
-
-    if (evt.p1 && evt.p2 && evt.score1 !== undefined && evt.score2 !== undefined) {
-      $("score").textContent = `Score: ${evt.p1} ${evt.score1} - ${evt.score2} ${evt.p2}`;
-      if (evt.remainSec !== undefined) $("timer").textContent = `Còn ${evt.remainSec}s`;
-    }
   });
 
   stompClient.send("/app/battle/match/accept", {}, JSON.stringify({ matchId: currentMatchId }));
@@ -137,11 +153,12 @@ function declineMatch() {
 
 function renderQuestion(q) {
   $("question").textContent = `Câu ${q.index + 1}: ${q.questionText}`;
-  $("timer").textContent = `Còn ${(q.timeLimitSec || 10)}s`;
-
   $("options").innerHTML = "";
-  const letters = ["A", "B", "C", "D"];
 
+  answeredIndex.delete(q.index);
+  startCountdown(q.timeLimitSec || 10, q.index);
+
+  const letters = ["A", "B", "C", "D"];
   (q.options || []).forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.className = "optBtn";
@@ -154,12 +171,56 @@ function renderQuestion(q) {
 
 function submitAnswer(choice, index) {
   if (!stompClient || !currentMatchId) return;
+  if (answeredIndex.has(index)) return;
+  answeredIndex.add(index);
+
+  clearCountdown();
+  disableOptions();
+
   stompClient.send("/app/battle/answer", {}, JSON.stringify({
     matchId: currentMatchId,
     choice,
     index
   }));
-  log(`Answer: ${choice} (index=${index})`);
+  log(`Answer: ${choice || "(timeout)"} (index=${index})`);
+}
+
+function disableOptions() {
+  const buttons = document.querySelectorAll("#options button");
+  buttons.forEach((btn) => {
+    btn.disabled = true;
+    btn.style.opacity = "0.6";
+    btn.style.cursor = "not-allowed";
+  });
+}
+
+function startCountdown(seconds, index) {
+  clearCountdown();
+  countdownRemaining = seconds;
+  updateTimer();
+
+  countdownTimer = setInterval(() => {
+    countdownRemaining -= 1;
+    updateTimer();
+
+    if (countdownRemaining <= 0) {
+      clearCountdown();
+      if (!answeredIndex.has(index)) {
+        submitAnswer("", index);
+      }
+    }
+  }, 1000);
+}
+
+function updateTimer() {
+  $("timer").textContent = `Còn ${Math.max(0, countdownRemaining)}s`;
+}
+
+function clearCountdown() {
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
 }
 
 function playAgain() {
@@ -167,7 +228,6 @@ function playAgain() {
   $("question").textContent = "Chưa có câu hỏi";
   $("options").innerHTML = "";
   $("timer").textContent = "0s";
-  $("score").textContent = "Score: -";
   log("Play again.");
 }
 
@@ -178,8 +238,8 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnDecline").addEventListener("click", declineMatch);
   $("btnPlayAgain").addEventListener("click", playAgain);
 
-  const me = $("me")?.textContent?.trim();
-  if (!me) {
+  currentUser = $("me")?.textContent?.trim() || "";
+  if (!currentUser) {
     $("status").textContent = "Bạn cần đăng nhập để chơi battle";
     window.location.href = "/login";
     return;

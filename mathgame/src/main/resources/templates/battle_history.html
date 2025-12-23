@@ -1,7 +1,7 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lịch sử thi đấu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
-<body>
+<body class="galaxy">
   <main class="page">
     <section class="hero">
       <div>
@@ -19,38 +19,74 @@
       <span class="badge">BATTLE</span>
     </section>
 
-    <section class="card fade-up">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Thời gian</th>
-            <th>Đối thủ</th>
-            <th>Tỉ số</th>
-            <th>Kết quả</th>
-            <th>Điểm (+/-)</th>
-            <th>Match ID</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="b : ${items}">
-            <td th:text="${#temporals.format(b.playedAt, 'dd/MM/yyyy HH:mm:ss')}">-</td>
-            <td th:text="${b.opponent}">-</td>
-            <td th:text="${b.myScore} + ' - ' + ${b.opponentScore}">0-0</td>
-            <td th:text="${b.outcome}"></td>
-            <td th:text="${b.scoreDelta}">0</td>
-            <td th:text="${b.matchId}">-</td>
-          </tr>
-          <tr th:if="${#lists.isEmpty(items)}">
-            <td colspan="6">Chưa có lịch sử thi đấu.</td>
-          </tr>
-        </tbody>
-      </table>
+    <section class="card history-card fade-up">
+      <div class="history-tabs">
+        <button class="history-tab active" type="button" data-filter="ALL">Tất cả</button>
+        <button class="history-tab win" type="button" data-filter="WIN">Thắng</button>
+        <button class="history-tab draw" type="button" data-filter="DRAW">Hòa</button>
+        <button class="history-tab lose" type="button" data-filter="LOSE">Thua</button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Đối thủ</th>
+              <th class="center">Tỉ số</th>
+              <th class="center">Kết quả</th>
+              <th class="center">Điểm (+/-)</th>
+              <th>Match ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="b : ${items}" th:attr="data-outcome=${b.outcome}">
+              <td th:text="${#temporals.format(b.playedAt, 'dd/MM/yyyy HH:mm:ss')}">-</td>
+              <td th:text="${b.opponent}">-</td>
+              <td class="center" th:text="${b.myScore + ' - ' + b.opponentScore}">0-0</td>
+              <td class="center">
+                <span class="pill" th:attr="data-outcome=${b.outcome}" th:text="${b.outcome}">DRAW</span>
+              </td>
+              <td class="center">
+                <span class="delta" th:text="${b.scoreDelta >= 0 ? '+' + b.scoreDelta : b.scoreDelta}" th:classappend="${b.scoreDelta >= 0} ? ' delta-plus' : ' delta-minus'">0</span>
+              </td>
+              <td class="mono" th:text="${b.matchId}">-</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(items)}">
+              <td colspan="6" class="muted" style="text-align:center; padding: 18px 12px;">Chưa có lịch sử thi đấu.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pager" th:if="${!#lists.isEmpty(items)}">
+        <button class="pager-btn" type="button" disabled>&lsaquo;</button>
+        <span class="muted">1 / 1</span>
+        <button class="pager-btn" type="button" disabled>&rsaquo;</button>
+      </div>
 
       <div class="section link-row">
         <a class="btn btn-ghost" href="/battle">Quay lại battle</a>
-        <a class="btn btn-ghost" href="/lobby">Về Lobby</a>
+        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
       </div>
     </section>
   </main>
+
+  <script>
+    const tabs = document.querySelectorAll('.history-tab');
+    const rows = document.querySelectorAll('tbody tr[data-outcome]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+        const filter = tab.dataset.filter;
+        rows.forEach((row) => {
+          const outcome = row.dataset.outcome;
+          row.style.display = filter === 'ALL' || outcome === filter ? '' : 'none';
+        });
+      });
+    });
+  </script>
 </body>
 </html>
