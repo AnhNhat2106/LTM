@@ -9,29 +9,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <div>
-        <h1 class="hero-title">Chọn mức độ</h1>
-        <p class="hero-sub">Hãy chọn độ khó phù hợp để bắt đầu luyện tập.</p>
-      </div>
-      <span class="badge">PRACTICE</span>
+<body class="galaxy">
+  <main class="practice-page">
+    <section class="practice-hero">
+      <h1>Chọn mức độ</h1>
+      <p>Hãy chọn độ khó phù hợp để bắt đầu luyện tập.</p>
+      <span class="status-pill practice-pill">Practice</span>
     </section>
 
-    <section class="card fade-up">
+    <section class="practice-frame fade-up">
       <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
-      <div class="grid">
-        <a class="btn" href="/practice?level=easy">Dễ</a>
-        <a class="btn" href="/practice?level=medium">Trung bình</a>
-        <a class="btn" href="/practice?level=hard">Khó</a>
+      <div class="level-grid">
+        <a class="level-btn" href="/practice?level=easy">Dễ</a>
+        <a class="level-btn" href="/practice?level=medium">Trung bình</a>
+        <a class="level-btn" href="/practice?level=hard">Khó</a>
       </div>
 
-      <div class="section link-row">
-        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
+      <div class="practice-actions">
+        <a class="practice-btn alt" href="/lobby">Về trang chủ</a>
       </div>
     </section>
   </main>
 </body>
 </html>
-

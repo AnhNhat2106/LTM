@@ -16,6 +16,7 @@ public class EmailOtpService {
 
     public static final String PURPOSE_REGISTER = "REGISTER";
     public static final String PURPOSE_RESET = "RESET";
+    public static final String PURPOSE_CHANGE_PASSWORD = "CHANGE_PASSWORD";
 
     private final EmailOtpRepository repo;
     private final JavaMailSender mailSender;

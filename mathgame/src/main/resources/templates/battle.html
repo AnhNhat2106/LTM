@@ -3,81 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Thi đấu (Realtime)</title>
+  <title>Thi đấu realtime</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
 <body class="galaxy">
-  <main class="page">
-    <section class="hero">
-      <div>
-        <h1 class="hero-title">Thi đấu realtime</h1>
-        <p class="hero-sub">Tìm đối thủ và trả lời nhanh nhất.</p>
+  <main class="battle-page">
+    <section class="battle-hero">
+      <h1>Thi đấu realtime</h1>
+      <p>Tìm đối thủ và trả lời nhanh nhất.</p>
+      <button id="btnFind" class="battle-top-btn" type="button">TÌM ĐỐI THỦ</button>
+      <div class="battle-top-meta">
+        <span class="battle-status" id="status">Đang khởi tạo...</span>
       </div>
-      <span class="badge" id="status">Đang khởi tạo...</span>
     </section>
 
     <span id="me" th:text="${me}" style="display:none"></span>
 
-    <section class="space-frame fade-up">
-      <div class="section">
-        <div class="grid">
-          <button id="btnFind" class="btn" type="button">Tìm đối thủ</button>
-          <button id="btnCancel" class="btn btn-ghost" type="button" style="display:none;">Hủy tìm trận</button>
-          <a id="gotoHistory" href="/battle/history" class="btn btn-ghost" style="display:none;text-decoration:none;">Lịch sử thi đấu</a>
-        </div>
-        <p class="muted" id="hintIdle" style="margin-top:10px;">Bấm "Tìm đối thủ" để vào hàng chờ.</p>
+    <section class="battle-frame fade-up">
+      <p class="battle-hint" id="hintIdle">Bấm “Tìm đối thủ” để vào hàng chờ.</p>
+
+      <div class="battle-controls">
+        <button id="btnCancel" class="battle-btn ghost" type="button" style="display:none;">Hủy tìm trận</button>
+        <a id="gotoHistory" href="/battle/history" class="battle-btn ghost" style="display:none;">Lịch sử thi đấu</a>
       </div>
 
-      <div id="confirmBox" class="section" style="display:none;">
-        <div class="card" style="padding:16px;">
-          <b>Tìm thấy đối thủ</b>
-          <div id="matchInfo" class="muted" style="margin-top:6px;"></div>
-          <div class="link-row" style="margin-top:12px;">
-            <button id="btnAccept" class="btn" type="button">Xác nhận thi đấu</button>
-            <button id="btnDecline" class="btn btn-ghost" type="button">Từ chối</button>
+      <div id="confirmBox" class="battle-panel" style="display:none;">
+        <div class="match-card">
+          <div class="match-title">Tìm thấy đối thủ</div>
+          <div id="matchInfo" class="match-info">-</div>
+          <div class="battle-actions match-actions">
+            <button id="btnAccept" class="battle-btn" type="button">Xác nhận thi đấu</button>
+            <button id="btnDecline" class="battle-btn ghost" type="button">Từ chối</button>
           </div>
         </div>
       </div>
 
-      <div id="playBox" class="section" style="display:none;">
-        <div class="card" style="padding:16px;">
-          <div class="link-row">
-            <h3 id="question" style="margin:0;">Chưa có câu hỏi</h3>
-            <div id="timer" class="badge">0s</div>
+      <div id="playBox" class="battle-panel" style="display:none;">
+        <div class="battle-play-card">
+          <div class="battle-question-row">
+            <h3 id="question" class="battle-question">Chưa có câu hỏi</h3>
+            <div id="timer" class="battle-timer">0s</div>
           </div>
-
-          <div id="options" class="grid" style="margin-top:12px;"></div>
+          <div id="optionLabels" class="battle-option-labels"></div>
+          <div id="options" class="battle-options"></div>
+          <div class="battle-actions battle-forfeit-actions">
+            <button id="btnForfeit" class="battle-btn danger" type="button">Hủy trận đấu</button>
+          </div>
         </div>
       </div>
 
-      <div id="resultBox" class="section" style="display:none;">
-        <div class="result-hero">KẾT QUẢ</div>
+      <div id="resultBox" class="battle-panel" style="display:none;">
+        <div class="result-hero">Kết quả</div>
         <div class="result-panel">
           <div class="result-banner" id="resultTitle">-</div>
 
           <div class="result-scoreboard">
             <div class="result-player left">
-              <div class="result-emblem">🛡️</div>
+              <div class="result-emblem">P1</div>
               <div class="result-name" id="resultPlayer1">-</div>
             </div>
             <div class="result-score" id="resultScore">-</div>
             <div class="result-player right">
-              <div class="result-emblem">⚔️</div>
+              <div class="result-emblem">P2</div>
               <div class="result-name" id="resultPlayer2">-</div>
             </div>
           </div>
 
           <div class="result-meta-grid">
             <div class="result-meta-item">
-              <span class="result-icon">🏆</span>
+              <span class="result-icon">WIN</span>
               <span>Người thắng:</span>
               <b id="resultWinner">-</b>
             </div>
             <div class="result-meta-item">
-              <span class="result-icon">✨</span>
+              <span class="result-icon">DELTA</span>
               <span id="resultDelta">-</span>
             </div>
           </div>
@@ -90,9 +92,9 @@
         </div>
       </div>
 
-      <div class="section link-row">
-        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
-        <a class="btn btn-ghost" href="/ranking">Bảng xếp hạng</a>
+      <div class="battle-actions" id="battleFooterActions">
+        <a class="battle-btn ghost" href="/lobby">Về trang chủ</a>
+        <a class="battle-btn alt" href="/ranking">Bảng xếp hạng</a>
       </div>
     </section>
   </main>

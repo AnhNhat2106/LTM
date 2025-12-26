@@ -21,6 +21,8 @@ function setState({ status, showFind, showCancel, showConfirm, showPlay, showRes
   $("confirmBox").style.display = showConfirm ? "block" : "none";
   $("playBox").style.display = showPlay ? "block" : "none";
   $("resultBox").style.display = showResult ? "block" : "none";
+  const footerActions = $("battleFooterActions");
+  if (footerActions) footerActions.style.display = showResult ? "none" : "flex";
 }
 
 function setIdle(msg = "Sẵn sàng") {
@@ -40,6 +42,7 @@ function setFound(msg = "Tìm thấy đối thủ!") {
 
 function setPlaying(msg = "Đang thi đấu") {
   setState({ status: msg, showFind: false, showCancel: false, showConfirm: false, showPlay: true, showResult: false });
+  resetForfeitButton();
 }
 
 function setResult(msg = "Trận đấu kết thúc!") {
@@ -61,11 +64,11 @@ function connectWs() {
       const evt = JSON.parse(m.body);
       log("[SYS] " + m.body);
 
-      if (evt.type === "QUEUING") setQueuing(evt.message);
-      else if (evt.type === "IDLE") setIdle(evt.message);
-      else if (evt.type === "PLAYING") setPlaying(evt.message);
-      else if (evt.type === "CONFIRM") $("status").textContent = evt.message;
-      else if (evt.type === "RESULT") $("status").textContent = evt.message;
+      if (evt.type === "QUEUING") setQueuing();
+      else if (evt.type === "IDLE") setIdle();
+      else if (evt.type === "PLAYING") setPlaying();
+      else if (evt.type === "CONFIRM") $("status").textContent = "Bạn đã xác nhận. Đang chờ đối thủ...";
+      else if (evt.type === "RESULT") $("status").textContent = "Trận đấu kết thúc!";
     });
 
     stompClient.subscribe("/user/queue/match", (m) => {
@@ -127,6 +130,25 @@ function cancelFind() {
   log("Cancel queue...");
 }
 
+function forfeitMatch() {
+  if (!stompClient || !currentMatchId) return;
+  const btn = $("btnForfeit");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Đang hủy...";
+  }
+  $("status").textContent = "Bạn đã hủy trận. Đang xử lý kết quả...";
+  stompClient.send("/app/battle/match/forfeit", {}, JSON.stringify({ matchId: currentMatchId }));
+  log("Forfeit match: " + currentMatchId);
+}
+
+function resetForfeitButton() {
+  const btn = $("btnForfeit");
+  if (!btn) return;
+  btn.disabled = false;
+  btn.textContent = "Hủy trận đấu";
+}
+
 function acceptMatch() {
   if (!stompClient || !currentMatchId) return;
 
@@ -154,16 +176,22 @@ function declineMatch() {
 function renderQuestion(q) {
   $("question").textContent = `Câu ${q.index + 1}: ${q.questionText}`;
   $("options").innerHTML = "";
+  $("optionLabels").innerHTML = "";
 
   answeredIndex.delete(q.index);
   startCountdown(q.timeLimitSec || 10, q.index);
 
   const letters = ["A", "B", "C", "D"];
   (q.options || []).forEach((opt, i) => {
+    const label = document.createElement("span");
+    label.className = "battle-option-label";
+    label.textContent = `${letters[i]}) ${opt}`;
+    $("optionLabels").appendChild(label);
+
     const btn = document.createElement("button");
-    btn.className = "optBtn";
+    btn.className = "battle-option";
     btn.type = "button";
-    btn.textContent = opt;
+    btn.textContent = `${letters[i]}${opt}`;
     btn.onclick = () => submitAnswer(letters[i], q.index);
     $("options").appendChild(btn);
   });
@@ -227,6 +255,7 @@ function playAgain() {
   setIdle("Sẵn sàng");
   $("question").textContent = "Chưa có câu hỏi";
   $("options").innerHTML = "";
+  $("optionLabels").innerHTML = "";
   $("timer").textContent = "0s";
   log("Play again.");
 }
@@ -236,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("btnCancel").addEventListener("click", cancelFind);
   $("btnAccept").addEventListener("click", acceptMatch);
   $("btnDecline").addEventListener("click", declineMatch);
+  $("btnForfeit").addEventListener("click", forfeitMatch);
   $("btnPlayAgain").addEventListener("click", playAgain);
 
   currentUser = $("me")?.textContent?.trim() || "";

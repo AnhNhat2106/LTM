@@ -81,6 +81,44 @@ public class UserService {
         repo.save(user);
     }
 
+    public void changePasswordWithOtp(String username, String otpCode, String newPassword, String confirmPassword) {
+        if (otpCode == null || otpCode.isBlank()) {
+            throw new RuntimeException("OTP code is required");
+        }
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new RuntimeException("New password is required");
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            throw new RuntimeException("Confirm password does not match");
+        }
+
+        User user = findByUsername(username);
+        otpService.verifyOtp(user.getEmail(), EmailOtpService.PURPOSE_CHANGE_PASSWORD, otpCode);
+
+        user.setPasswordHash(encoder.encode(newPassword));
+        repo.save(user);
+    }
+
+    public void changeUsername(String currentUsername, String newUsername) {
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            throw new RuntimeException("Username is required");
+        }
+        String candidate = newUsername.trim();
+        if (candidate.length() < 3 || candidate.length() > 50) {
+            throw new RuntimeException("Username must be 3 to 50 characters");
+        }
+        if (candidate.equals(currentUsername)) {
+            return;
+        }
+        if (repo.existsByUsername(candidate)) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        User user = findByUsername(currentUsername);
+        user.setUsername(candidate);
+        repo.save(user);
+    }
+
     public void resetPasswordWithOtp(String email, String otpCode, String newPassword, String confirmPassword) {
         if (email == null || email.trim().isEmpty()) {
             throw new RuntimeException("Email is required");

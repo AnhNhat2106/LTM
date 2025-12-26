@@ -45,7 +45,9 @@ public class AuthController {
                                                        @RequestParam("purpose") String purpose) {
         try {
             String p = purpose == null ? "" : purpose.trim().toUpperCase(Locale.ROOT);
-            if (!EmailOtpService.PURPOSE_REGISTER.equals(p) && !EmailOtpService.PURPOSE_RESET.equals(p)) {
+            if (!EmailOtpService.PURPOSE_REGISTER.equals(p)
+                    && !EmailOtpService.PURPOSE_RESET.equals(p)
+                    && !EmailOtpService.PURPOSE_CHANGE_PASSWORD.equals(p)) {
                 throw new RuntimeException("Invalid purpose");
             }
             otpService.sendOtp(email, p);

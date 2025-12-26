@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" />
@@ -10,16 +10,14 @@
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
 <body class="galaxy">
-  <main class="page">
-    <section class="hero">
-      <div>
-        <h1 class="hero-title">Lịch sử thi đấu</h1>
-        <p class="hero-sub">Người chơi: <b th:text="${username}">user</b></p>
-      </div>
-      <span class="badge">BATTLE</span>
+  <main class="battle-page">
+    <section class="battle-hero">
+      <h1>Lịch sử thi đấu</h1>
+      <p>Người chơi: <b th:text="${username}">user</b> · Tổng hợp kết quả gần đây.</p>
+      <span class="status-pill battle-pill">BATTLE</span>
     </section>
 
-    <section class="card history-card fade-up">
+    <section class="battle-frame fade-up">
       <div class="history-tabs">
         <button class="history-tab active" type="button" data-filter="ALL">Tất cả</button>
         <button class="history-tab win" type="button" data-filter="WIN">Thắng</button>
@@ -27,7 +25,7 @@
         <button class="history-tab lose" type="button" data-filter="LOSE">Thua</button>
       </div>
 
-      <div class="table-wrap">
+      <div class="table-wrap battle-table">
         <table class="history-table">
           <thead>
             <tr>
@@ -65,9 +63,9 @@
         <button class="pager-btn" type="button" disabled>&rsaquo;</button>
       </div>
 
-      <div class="section link-row">
-        <a class="btn btn-ghost" href="/battle">Quay lại battle</a>
-        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
+      <div class="battle-actions">
+        <a class="battle-btn" href="/battle">Quay lại thi đấu</a>
+        <a class="battle-btn alt" href="/lobby">Về trang chủ</a>
       </div>
     </section>
   </main>

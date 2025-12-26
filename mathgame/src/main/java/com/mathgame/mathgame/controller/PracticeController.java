@@ -37,7 +37,7 @@ public class PracticeController {
 
         int totalAvailable = practiceService.countByLevel(normalized);
         if (totalAvailable == 0) {
-            model.addAttribute("error", "ChÆ°a cÃ³ cÃ¢u há»i cho má»©c Ä‘á»™ nÃ y.");
+            model.addAttribute("error", "Chưa có câu hỏi cho mức độ này.");
             return "practice_select";
         }
 
@@ -52,7 +52,7 @@ public class PracticeController {
 
         PracticeQuestion q = pickNext(session, normalized);
         if (q == null) {
-            model.addAttribute("error", "KhÃ´ng tÃ¬m tháº¥y cÃ¢u há»i.");
+            model.addAttribute("error", "Không tìm thấy câu hỏi.");
             return "practice_select";
         }
 
@@ -197,9 +197,9 @@ public class PracticeController {
     private String levelLabel(String level) {
         if (level == null) return "-";
         return switch (level) {
-            case "easy" -> "Dá»…";
-            case "medium" -> "Trung bÃ¬nh";
-            case "hard" -> "KhÃ³";
+            case "easy" -> "Dễ";
+            case "medium" -> "Trung bình";
+            case "hard" -> "Khó";
             default -> "-";
         };
     }
@@ -209,4 +209,3 @@ public class PracticeController {
         String correctChoice;
     }
 }
-

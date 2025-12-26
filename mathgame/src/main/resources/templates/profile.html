@@ -1,91 +1,92 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Ho so</title>
+  <title>Hồ sơ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css"/>
 </head>
 <body class="galaxy">
-  <main class="page">
-    <section class="hero">
+  <main class="page profile-page">
+    <section class="hero profile-hero">
       <div>
-        <h1 class="hero-title">Ho so nguoi choi</h1>
-        <p class="hero-sub">Tong quan hoat dong va cai dat tai khoan</p>
+        <h1 class="hero-title">Hồ sơ người chơi</h1>
+        <p class="hero-sub">Tổng quan hoạt động và cài đặt tài khoản</p>
       </div>
       <span class="badge">PROFILE</span>
     </section>
 
-    <section class="space-frame fade-up">
-      <div class="section">
-        <h3 style="margin:0 0 10px 0;">Thong tin</h3>
-        <div class="grid">
-          <div>
-            <div class="muted">Username</div>
-            <div><b th:text="${user.username}">user</b></div>
-          </div>
-          <div>
-            <div class="muted">Email</div>
-            <div><b th:text="${user.email}">email</b></div>
-          </div>
-          <div>
-            <div class="muted">Ngay tao</div>
-            <div><b th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}">-</b></div>
-          </div>
+    <section class="profile-shell fade-up">
+      <form class="profile-info" th:action="@{/profile/username}" method="post">
+        <div class="info-item">
+          <div class="info-label">Username</div>
+          <input class="info-input" id="usernameInput" name="newUsername" th:value="${user.username}" value="user" readonly />
         </div>
-      </div>
-
-      <div class="section">
-        <h3 style="margin:0 0 10px 0;">Thong ke luyen tap</h3>
-        <div class="grid">
-          <div>
-            <div class="muted">Tong diem</div>
-            <div><b th:text="${practice.totalScore}">0</b></div>
-          </div>
-          <div>
-            <div class="muted">So luot</div>
-            <div><b th:text="${practice.totalPlays}">0</b></div>
-          </div>
-          <div>
-            <div class="muted">So cau dung</div>
-            <div><b th:text="${practice.totalCorrect}">0</b></div>
-          </div>
+        <div class="info-item">
+          <div class="info-label">Email</div>
+          <div class="info-value" th:text="${user.email}">email</div>
         </div>
-      </div>
+        <div class="info-item">
+          <div class="info-label">Ngày tạo</div>
+          <div class="info-value" th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}">-</div>
+        </div>
+        <div class="edit-actions">
+          <button class="edit-btn" id="editToggle" type="button">Chỉnh sửa</button>
+          <button class="edit-btn save-btn" id="editSave" type="submit" style="display:none;">Lưu</button>
+        </div>
+      </form>
 
-      <div class="section">
-        <h3 style="margin:0 0 10px 0;">Thong ke battle</h3>
-        <div class="grid">
-          <div>
-            <div class="muted">Tong diem</div>
-            <div><b th:text="${battle.totalPoints}">0</b></div>
-          </div>
-          <div>
-            <div class="muted">So tran</div>
-            <div><b th:text="${battle.matches}">0</b></div>
-          </div>
-          <div>
-            <div class="muted">Thang/Hoa/Thua</div>
+      <div class="profile-stats-grid">
+        <article class="stat-card">
+          <div class="stat-title">Thống kê luyện tập</div>
+          <div class="stat-main">
+            <div class="stat-icon">✓</div>
             <div>
-              <b th:text="${battle.wins}">0</b> /
-              <b th:text="${battle.draws}">0</b> /
-              <b th:text="${battle.losses}">0</b>
+              <div class="stat-number" th:text="${practice.totalScore}">0</div>
+              <div class="stat-label">Tổng điểm</div>
             </div>
           </div>
-        </div>
+          <div class="stat-row">
+            <span>Số lượt</span>
+            <strong th:text="${practice.totalPlays}">0</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-title">Thống kê battle</div>
+          <div class="stat-main">
+            <div class="stat-icon alt">⚔</div>
+            <div>
+              <div class="stat-number" th:text="${battle.totalPoints}">0</div>
+              <div class="stat-label">Tổng điểm</div>
+            </div>
+          </div>
+          <div class="stat-row">
+            <span>Số trận</span>
+            <strong>
+              <span th:text="${battle.wins}">0</span>/<span th:text="${battle.draws}">0</span>/<span th:text="${battle.losses}">0</span>
+            </strong>
+          </div>
+        </article>
       </div>
 
-      <div class="section">
-        <h3 style="margin:0 0 10px 0;">Doi mat khau</h3>
+      <div class="password-panel">
+        <h3>Đổi mật khẩu</h3>
         <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
         <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
         <form th:action="@{/profile/password}" method="post">
-          <div class="input-row" style="margin-bottom: 14px;">
-            <input class="form-control" id="currentPassword" type="password" name="currentPassword" placeholder="Mat khau hien tai" required />
-            <button class="toggle-btn" type="button" data-target="currentPassword" aria-label="Hien mat khau">
+          <input type="hidden" id="profileEmail" th:value="${user.email}" value="" />
+          <div class="link-row" style="margin-bottom: 10px;">
+            <input class="form-control" id="otpCode" name="otpCode" placeholder="Mã OTP" required />
+            <button class="btn btn-ghost" type="button" onclick="sendOtp('CHANGE_PASSWORD')">Gửi OTP</button>
+          </div>
+          <div id="otpMessage" class="muted" style="margin-bottom: 8px;"></div>
+          <div class="input-row">
+            <input class="form-control" id="newPassword" type="password" name="newPassword" placeholder="Mật khẩu mới" required />
+            <button class="toggle-btn" type="button" data-target="newPassword" aria-label="Hiện mật khẩu">
               <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" d="M12 5c5.5 0 9.7 4.2 11 6.9c-1.3 2.7-5.5 6.9-11 6.9S2.3 14.6 1 11.9C2.3 9.2 6.5 5 12 5zm0 2c-4.1 0-7.5 2.8-8.7 4.9c1.2 2.1 4.6 4.9 8.7 4.9s7.5-2.8 8.7-4.9C19.5 9.8 16.1 7 12 7zm0 2.5A3.5 3.5 0 1 1 12 16a3.5 3.5 0 0 1 0-7.0zm0 2a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/>
               </svg>
@@ -94,9 +95,9 @@
               </svg>
             </button>
           </div>
-          <div class="input-row" style="margin-bottom: 14px;">
-            <input class="form-control" id="newPassword" type="password" name="newPassword" placeholder="Mat khau moi" required />
-            <button class="toggle-btn" type="button" data-target="newPassword" aria-label="Hien mat khau">
+          <div class="input-row">
+            <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" placeholder="Nhập lại mật khẩu mới" required />
+            <button class="toggle-btn" type="button" data-target="confirmPassword" aria-label="Hiện mật khẩu">
               <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" d="M12 5c5.5 0 9.7 4.2 11 6.9c-1.3 2.7-5.5 6.9-11 6.9S2.3 14.6 1 11.9C2.3 9.2 6.5 5 12 5zm0 2c-4.1 0-7.5 2.8-8.7 4.9c1.2 2.1 4.6 4.9 8.7 4.9s7.5-2.8 8.7-4.9C19.5 9.8 16.1 7 12 7zm0 2.5A3.5 3.5 0 1 1 12 16a3.5 3.5 0 0 1 0-7.0zm0 2a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/>
               </svg>
@@ -105,25 +106,14 @@
               </svg>
             </button>
           </div>
-          <div class="input-row" style="margin-bottom: 14px;">
-            <input class="form-control" id="confirmPassword" type="password" name="confirmPassword" placeholder="Nhap lai mat khau moi" required />
-            <button class="toggle-btn" type="button" data-target="confirmPassword" aria-label="Hien mat khau">
-              <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M12 5c5.5 0 9.7 4.2 11 6.9c-1.3 2.7-5.5 6.9-11 6.9S2.3 14.6 1 11.9C2.3 9.2 6.5 5 12 5zm0 2c-4.1 0-7.5 2.8-8.7 4.9c1.2 2.1 4.6 4.9 8.7 4.9s7.5-2.8 8.7-4.9C19.5 9.8 16.1 7 12 7zm0 2.5A3.5 3.5 0 1 1 12 16a3.5 3.5 0 0 1 0-7.0zm0 2a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/>
-              </svg>
-              <svg class="eye-off" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M3.3 4.7l16 16-1.4 1.4-3-3C13.9 19.7 13 19.9 12 19.9c-5.5 0-9.7-4.2-11-6.9c.6-1.2 1.8-2.8 3.5-4.2l-2.6-2.6L3.3 4.7zm4.1 4.1C5.6 10 4.5 11.3 3.9 12.5c1.2 2.1 4.6 4.9 8.1 4.9c.5 0 1-.1 1.5-.2l-2.2-2.2a3.5 3.5 0 0 1-4-4l-.9-.9zm4.5 1.1l3.2 3.2a3.5 3.5 0 0 0-3.2-3.2zm.1-5c5.5 0 9.7 4.2 11 6.9a14.9 14.9 0 0 1-3.4 4.2l-1.4-1.4c1.3-1.2 2.2-2.4 2.7-3.3C19.5 9.8 16.1 7 12 7c-.8 0-1.6.1-2.4.3L8.1 5.8C9.3 5.3 10.6 5 12 5z"/>
-              </svg>
-            </button>
-          </div>
-          <button class="btn" type="submit">Cap nhat</button>
+          <button class="btn" type="submit">Cập nhật</button>
         </form>
       </div>
 
-      <div class="section link-row">
-        <a class="btn btn-ghost" href="/lobby">Ve trang chu</a>
-        <a class="btn btn-ghost" href="/practice/history">Lich su luyen tap</a>
-        <a class="btn btn-ghost" href="/battle/history">Lich su battle</a>
+      <div class="profile-links">
+        <a class="link-chip" href="/lobby">Về trang chủ</a>
+        <a class="link-chip" href="/practice/history">Lịch sử luyện tập</a>
+        <a class="link-chip" href="/battle/history">Lịch sử trận đấu</a>
       </div>
     </section>
   </main>
@@ -136,9 +126,49 @@
         const isPassword = input.type === "password";
         input.type = isPassword ? "text" : "password";
         btn.classList.toggle("is-on", isPassword);
-        btn.setAttribute("aria-label", isPassword ? "An mat khau" : "Hien mat khau");
+        btn.setAttribute("aria-label", isPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu");
       });
     });
+
+    const editToggle = document.getElementById("editToggle");
+    const editSave = document.getElementById("editSave");
+    const usernameInput = document.getElementById("usernameInput");
+
+    editToggle.addEventListener("click", () => {
+      const editing = usernameInput.hasAttribute("readonly");
+      if (editing) {
+        usernameInput.removeAttribute("readonly");
+        usernameInput.focus();
+        editSave.style.display = "inline-flex";
+      } else {
+        usernameInput.setAttribute("readonly", "readonly");
+        editSave.style.display = "none";
+      }
+    });
+
+    async function sendOtp(purpose) {
+      const email = document.getElementById("profileEmail").value.trim();
+      const msg = document.getElementById("otpMessage");
+      msg.textContent = "";
+      if (!email) {
+        msg.textContent = "Không có email.";
+        return;
+      }
+
+      const body = new URLSearchParams({ email, purpose });
+      try {
+        const res = await fetch("/otp/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Send failed");
+        msg.textContent = data.message || "OTP sent";
+      } catch (err) {
+        msg.textContent = err.message || "Send failed";
+      }
+    }
   </script>
 </body>
 </html>

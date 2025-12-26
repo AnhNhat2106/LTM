@@ -9,28 +9,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/theme.css" />
 </head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <div>
-        <h1 class="hero-title">Kết quả luyện tập</h1>
-        <p class="hero-sub">Mức độ: <b th:text="${levelLabel}">-</b></p>
-      </div>
-      <span class="badge">RESULT</span>
+<body class="galaxy">
+  <main class="practice-page">
+    <section class="practice-hero">
+      <h1>Kết quả luyện tập</h1>
+      <p>Mức độ: <b th:text="${levelLabel}">-</b></p>
     </section>
 
-    <section class="card fade-up">
-      <p>Tổng câu: <b th:text="${total}"></b></p>
-      <p>Đúng: <b th:text="${correct}"></b></p>
-      <p>Điểm: <b th:text="${score}"></b></p>
+    <section class="practice-frame fade-up">
+      <div class="result-card">
+        <div class="result-row">
+          <span class="result-icon">📋</span>
+          <div class="result-text">Tổng câu: <b th:text="${total}">0</b></div>
+        </div>
+        <div class="result-row">
+          <span class="result-icon ok">✓</span>
+          <div class="result-text">Đúng: <b th:text="${correct}">0</b></div>
+        </div>
+        <div class="result-row">
+          <span class="result-icon star">★</span>
+          <div class="result-text">Điểm: <b th:text="${score}">0</b></div>
+        </div>
+      </div>
 
-      <div class="section link-row">
-        <a class="btn" href="/practice">Luyện tập lại</a>
-        <a class="btn btn-ghost" href="/practice/history">Lịch sử</a>
-        <a class="btn btn-ghost" href="/lobby">Về trang chủ</a>
+      <div class="practice-actions">
+        <a class="practice-btn" href="/practice">Luyện tập lại</a>
+        <a class="practice-btn ghost" href="/practice/history">Lịch sử</a>
+        <a class="practice-btn alt" href="/lobby">Về trang chủ</a>
       </div>
     </section>
   </main>
 </body>
 </html>
-

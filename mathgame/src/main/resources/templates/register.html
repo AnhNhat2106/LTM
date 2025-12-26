@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dang ky</title>
+  <title>Đăng ký</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Oxanium:wght@500;700&display=swap" rel="stylesheet">
@@ -14,8 +14,8 @@
     <div class="card fade-up">
       <div class="hero" style="margin-bottom: 16px;">
         <div>
-          <h1 class="hero-title">Tao tai khoan</h1>
-          <p class="hero-sub">Dung Gmail va xac nhan OTP.</p>
+          <h1 class="hero-title">Tạo tài khoản</h1>
+          <p class="hero-sub">Dùng Gmail và xác nhận OTP.</p>
         </div>
         <span class="badge">NEW PLAYER</span>
       </div>
@@ -27,14 +27,14 @@
         <input class="form-control" id="email" th:field="*{email}" placeholder="Gmail (example@gmail.com)" type="email" required />
 
         <div class="link-row" style="margin-bottom: 10px;">
-          <input class="form-control" id="otpCode" th:field="*{otpCode}" placeholder="OTP code" required />
-          <button class="btn btn-ghost" type="button" onclick="sendOtp('REGISTER')">Gui OTP</button>
+          <input class="form-control" id="otpCode" th:field="*{otpCode}" placeholder="Mã OTP" required />
+          <button class="btn btn-ghost" type="button" onclick="sendOtp('REGISTER')">Gửi OTP</button>
         </div>
         <div id="otpMessage" class="muted" style="margin-bottom: 8px;"></div>
 
         <div class="input-row" style="margin-bottom: 14px;">
-          <input class="form-control" id="registerPassword" th:field="*{password}" placeholder="Mat khau" type="password" required />
-          <button class="toggle-btn" type="button" data-target="registerPassword" aria-label="Hien mat khau">
+          <input class="form-control" id="registerPassword" th:field="*{password}" placeholder="Mật khẩu" type="password" required />
+          <button class="toggle-btn" type="button" data-target="registerPassword" aria-label="Hiện mật khẩu">
             <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor" d="M12 5c5.5 0 9.7 4.2 11 6.9c-1.3 2.7-5.5 6.9-11 6.9S2.3 14.6 1 11.9C2.3 9.2 6.5 5 12 5zm0 2c-4.1 0-7.5 2.8-8.7 4.9c1.2 2.1 4.6 4.9 8.7 4.9s7.5-2.8 8.7-4.9C19.5 9.8 16.1 7 12 7zm0 2.5A3.5 3.5 0 1 1 12 16a3.5 3.5 0 0 1 0-7.0zm0 2a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/>
             </svg>
@@ -44,8 +44,8 @@
           </button>
         </div>
         <div class="input-row" style="margin-bottom: 14px;">
-          <input class="form-control" id="registerConfirmPassword" th:field="*{confirmPassword}" placeholder="Nhap lai mat khau" type="password" required />
-          <button class="toggle-btn" type="button" data-target="registerConfirmPassword" aria-label="Hien mat khau">
+          <input class="form-control" id="registerConfirmPassword" th:field="*{confirmPassword}" placeholder="Nhập lại mật khẩu" type="password" required />
+          <button class="toggle-btn" type="button" data-target="registerConfirmPassword" aria-label="Hiện mật khẩu">
             <svg class="eye" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor" d="M12 5c5.5 0 9.7 4.2 11 6.9c-1.3 2.7-5.5 6.9-11 6.9S2.3 14.6 1 11.9C2.3 9.2 6.5 5 12 5zm0 2c-4.1 0-7.5 2.8-8.7 4.9c1.2 2.1 4.6 4.9 8.7 4.9s7.5-2.8 8.7-4.9C19.5 9.8 16.1 7 12 7zm0 2.5A3.5 3.5 0 1 1 12 16a3.5 3.5 0 0 1 0-7.0zm0 2a1.5 1.5 0 1 0 0 3a1.5 1.5 0 0 0 0-3z"/>
             </svg>
@@ -54,11 +54,11 @@
             </svg>
           </button>
         </div>
-        <button class="btn" type="submit">Tao tai khoan</button>
+        <button class="btn" type="submit">Tạo tài khoản</button>
       </form>
 
       <div class="link-row" style="margin-top: 14px;">
-        <span class="muted">Da co tai khoan? <a th:href="@{/login}">Dang nhap</a></span>
+        <span class="muted">Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a></span>
       </div>
     </div>
   </main>
@@ -69,7 +69,7 @@
       const msg = document.getElementById("otpMessage");
       msg.textContent = "";
       if (!email) {
-        msg.textContent = "Nhap Gmail truoc.";
+        msg.textContent = "Nhập Gmail trước.";
         return;
       }
 
@@ -95,7 +95,7 @@
         const isPassword = input.type === "password";
         input.type = isPassword ? "text" : "password";
         btn.classList.toggle("is-on", isPassword);
-        btn.setAttribute("aria-label", isPassword ? "An mat khau" : "Hien mat khau");
+        btn.setAttribute("aria-label", isPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu");
       });
     });
   </script>

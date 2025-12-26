@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" />
@@ -13,7 +13,7 @@
   <main class="control-page">
     <section class="control-hero">
       <div class="hero-text">
-        <h1>Trung tâm điều khiển</h1>
+        <h1>MathGame - Đấu toán online</h1>
         <p>Xin chào <b th:text="${username}">player</b> - sẵn sàng vào trận.</p>
       </div>
       <span class="status-pill">Realtime</span>
@@ -34,7 +34,7 @@
             <span class="blade alt"></span>
             <span class="spark"></span>
           </div>
-          <h2>Đấu realtime</h2>
+          <h2>Đấu xếp hạng</h2>
           <p>Thi đấu với người chơi khác ngay lập tức.</p>
           <a class="mode-btn" th:href="@{/battle}">Bắt đầu ngay</a>
         </article>
@@ -58,7 +58,6 @@
           </div>
           <div>
             <div class="profile-name" th:text="${username}">Nhật</div>
-            <div class="profile-rank">Rank: <span class="rank-pill">Đồng III</span></div>
           </div>
         </div>
 
@@ -84,6 +83,40 @@
           <button class="logout-btn" type="submit">Đăng xuất</button>
         </form>
       </aside>
+    </section>
+
+    <section class="contact-panel fade-up">
+      <div class="contact-card">
+        <div class="contact-header">
+          <h2>Liên hệ admin</h2>
+          <p>Gặp sự cố hoặc cần hỗ trợ? Liên hệ trực tiếp để được phản hồi nhanh.</p>
+        </div>
+        <div class="contact-list">
+          <a class="contact-item" href="mailto:admin@mathgame.vn">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"></path>
+                <path d="m22 7-10 7L2 7"></path>
+              </svg>
+            </span>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">admin@mathgame.vn</div>
+            </div>
+          </a>
+          <a class="contact-item" href="tel:0909123456">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3 5.2 2 2 0 0 1 5 3h3a2 2 0 0 1 2 1.7c.1.8.3 1.6.6 2.4a2 2 0 0 1-.5 2.1L9 10a16 16 0 0 0 5 5l.8-.9a2 2 0 0 1 2.1-.5c.8.3 1.6.5 2.4.6a2 2 0 0 1 1.7 2z"></path>
+              </svg>
+            </span>
+            <div>
+              <div class="contact-label">SĐT</div>
+              <div class="contact-value">0909 123 456</div>
+            </div>
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 </body>
